@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://scene/main/InitWorld.gd" type="Script" id=1]
 [ext_resource path="res://resource/FiraCode-Regular.ttf" type="DynamicFontData" id=2]
@@ -11,6 +11,181 @@
 [ext_resource path="res://scene/main/Modeline.gd" type="Script" id=9]
 [ext_resource path="res://scene/main/PCAttack.gd" type="Script" id=10]
 [ext_resource path="res://scene/main/RemoveObject.gd" type="Script" id=11]
+[ext_resource path="res://resource/Dungeon_Tileset.png" type="Texture" id=12]
+[ext_resource path="res://resource/brickTileset.png" type="Texture" id=13]
+[ext_resource path="res://scene/main/Camera2D.gd" type="Script" id=14]
+[ext_resource path="res://resource/0f6a29db-2521-4e60-899f-1795dfa4906e.png" type="Texture" id=15]
+[ext_resource path="res://scene/main/TextureRect.gd" type="Script" id=17]
+[ext_resource path="res://resource/loading.png" type="Texture" id=18]
+
+[sub_resource type="ConvexPolygonShape2D" id=5]
+points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
+
+[sub_resource type="TileSet" id=6]
+0/name = "Dungeon_Tileset.png 0"
+0/texture = ExtResource( 12 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 128, 112, 16, 16 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape = SubResource( 5 )
+0/shape_one_way = false
+0/shape_one_way_margin = 1.0
+0/shapes = [ {
+"autotile_coord": Vector2( 0, 0 ),
+"one_way": false,
+"one_way_margin": 1.0,
+"shape": SubResource( 5 ),
+"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
+} ]
+0/z_index = 0
+1/name = "Dungeon_Tileset.png 1"
+1/texture = ExtResource( 12 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 48, 112, 16, 16 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
+2/name = "Dungeon_Tileset.png 2"
+2/texture = ExtResource( 12 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 16, 16, 64, 48 )
+2/tile_mode = 1
+2/autotile/bitmask_mode = 1
+2/autotile/bitmask_flags = [ Vector2( 0, 0 ), 432, Vector2( 0, 1 ), 438, Vector2( 0, 2 ), 54, Vector2( 1, 0 ), 504, Vector2( 1, 1 ), 511, Vector2( 1, 2 ), 63, Vector2( 2, 0 ), 504, Vector2( 2, 1 ), 511, Vector2( 2, 2 ), 63, Vector2( 3, 0 ), 216, Vector2( 3, 1 ), 219, Vector2( 3, 2 ), 27 ]
+2/autotile/icon_coordinate = Vector2( 1, 1 )
+2/autotile/tile_size = Vector2( 16, 16 )
+2/autotile/spacing = 0
+2/autotile/occluder_map = [  ]
+2/autotile/navpoly_map = [  ]
+2/autotile/priority_map = [  ]
+2/autotile/z_index_map = [  ]
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
+2/z_index = 0
+3/name = "brickTileset.png 3"
+3/texture = ExtResource( 13 )
+3/tex_offset = Vector2( 0, 0 )
+3/modulate = Color( 1, 1, 1, 1 )
+3/region = Rect2( 0, 0, 128, 96 )
+3/tile_mode = 1
+3/autotile/bitmask_mode = 1
+3/autotile/bitmask_flags = [ Vector2( 0, 0 ), 432, Vector2( 0, 1 ), 438, Vector2( 0, 2 ), 54, Vector2( 0, 3 ), 48, Vector2( 0, 4 ), 182, Vector2( 0, 5 ), 434, Vector2( 1, 0 ), 504, Vector2( 1, 1 ), 511, Vector2( 1, 2 ), 63, Vector2( 1, 3 ), 56, Vector2( 1, 4 ), 155, Vector2( 1, 5 ), 218, Vector2( 2, 0 ), 216, Vector2( 2, 1 ), 219, Vector2( 2, 2 ), 27, Vector2( 2, 3 ), 24, Vector2( 2, 4 ), 248, Vector2( 2, 5 ), 59, Vector2( 3, 0 ), 144, Vector2( 3, 1 ), 146, Vector2( 3, 2 ), 18, Vector2( 3, 3 ), 16, Vector2( 3, 4 ), 440, Vector2( 3, 5 ), 62, Vector2( 4, 0 ), 255, Vector2( 4, 1 ), 507, Vector2( 4, 2 ), 176, Vector2( 4, 3 ), 50, Vector2( 4, 4 ), 443, Vector2( 4, 5 ), 254, Vector2( 5, 0 ), 447, Vector2( 5, 1 ), 510, Vector2( 5, 2 ), 152, Vector2( 5, 3 ), 26, Vector2( 5, 4 ), 442, Vector2( 5, 5 ), 190, Vector2( 6, 0 ), 506, Vector2( 6, 1 ), 446, Vector2( 6, 2 ), 184, Vector2( 6, 3 ), 58, Vector2( 6, 4 ), 250, Vector2( 6, 5 ), 187, Vector2( 7, 0 ), 191, Vector2( 7, 1 ), 251, Vector2( 7, 2 ), 178, Vector2( 7, 3 ), 146, Vector2( 7, 4 ), 186 ]
+3/autotile/icon_coordinate = Vector2( 0, 0 )
+3/autotile/tile_size = Vector2( 16, 16 )
+3/autotile/spacing = 0
+3/autotile/occluder_map = [  ]
+3/autotile/navpoly_map = [  ]
+3/autotile/priority_map = [  ]
+3/autotile/z_index_map = [  ]
+3/occluder_offset = Vector2( 0, 0 )
+3/navigation_offset = Vector2( 0, 0 )
+3/shape_offset = Vector2( 0, 0 )
+3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+3/shape_one_way = false
+3/shape_one_way_margin = 0.0
+3/shapes = [  ]
+3/z_index = 0
+4/name = "0f6a29db-2521-4e60-899f-1795dfa4906e.png 4"
+4/texture = ExtResource( 15 )
+4/tex_offset = Vector2( 0, 0 )
+4/modulate = Color( 1, 1, 1, 1 )
+4/region = Rect2( 0, 0, 256, 192 )
+4/tile_mode = 1
+4/autotile/bitmask_mode = 1
+4/autotile/bitmask_flags = [ Vector2( 0, 2 ), 63, Vector2( 0, 3 ), 504, Vector2( 0, 4 ), 27, Vector2( 0, 5 ), 216, Vector2( 0, 6 ), 27, Vector2( 0, 7 ), 216, Vector2( 0, 8 ), 3, Vector2( 0, 10 ), 27, Vector2( 0, 11 ), 216, Vector2( 1, 2 ), 63, Vector2( 1, 3 ), 504, Vector2( 1, 4 ), 438, Vector2( 1, 5 ), 438, Vector2( 1, 9 ), 432, Vector2( 2, 0 ), 219, Vector2( 2, 1 ), 507, Vector2( 2, 2 ), 27, Vector2( 2, 3 ), 504, Vector2( 2, 5 ), 216, Vector2( 2, 11 ), 216, Vector2( 3, 0 ), 438, Vector2( 3, 1 ), 510, Vector2( 3, 2 ), 54, Vector2( 3, 3 ), 504, Vector2( 3, 4 ), 438, Vector2( 3, 5 ), 438, Vector2( 3, 9 ), 432, Vector2( 4, 0 ), 63, Vector2( 4, 1 ), 504, Vector2( 4, 3 ), 504, Vector2( 4, 8 ), 255, Vector2( 4, 9 ), 219, Vector2( 4, 10 ), 63, Vector2( 5, 0 ), 447, Vector2( 5, 1 ), 510, Vector2( 5, 2 ), 54, Vector2( 5, 3 ), 504, Vector2( 5, 8 ), 63, Vector2( 5, 10 ), 63, Vector2( 6, 0 ), 27, Vector2( 6, 1 ), 504, Vector2( 6, 2 ), 27, Vector2( 6, 3 ), 504, Vector2( 6, 8 ), 219, Vector2( 6, 9 ), 219, Vector2( 6, 10 ), 27, Vector2( 7, 0 ), 438, Vector2( 7, 1 ), 510, Vector2( 7, 3 ), 504, Vector2( 7, 4 ), 54, Vector2( 7, 5 ), 432, Vector2( 7, 6 ), 438, Vector2( 7, 7 ), 438, Vector2( 7, 8 ), 54, Vector2( 7, 10 ), 54, Vector2( 8, 1 ), 504, Vector2( 8, 3 ), 504, Vector2( 8, 4 ), 219, Vector2( 8, 5 ), 219, Vector2( 8, 8 ), 219, Vector2( 8, 9 ), 219, Vector2( 9, 0 ), 438, Vector2( 9, 1 ), 510, Vector2( 9, 3 ), 504, Vector2( 9, 5 ), 432, Vector2( 9, 6 ), 438, Vector2( 9, 7 ), 438, Vector2( 9, 10 ), 54, Vector2( 10, 0 ), 255, Vector2( 10, 1 ), 507, Vector2( 10, 2 ), 255, Vector2( 10, 3 ), 219, Vector2( 10, 4 ), 63, Vector2( 10, 5 ), 216, Vector2( 10, 6 ), 63, Vector2( 10, 8 ), 63, Vector2( 10, 9 ), 216, Vector2( 10, 10 ), 27, Vector2( 11, 0 ), 63, Vector2( 11, 1 ), 504, Vector2( 11, 2 ), 447, Vector2( 11, 3 ), 438, Vector2( 11, 4 ), 63, Vector2( 11, 5 ), 432, Vector2( 11, 6 ), 63, Vector2( 11, 7 ), 432, Vector2( 11, 8 ), 63, Vector2( 12, 0 ), 219, Vector2( 12, 1 ), 507, Vector2( 12, 2 ), 219, Vector2( 12, 3 ), 219, Vector2( 12, 4 ), 27, Vector2( 12, 5 ), 216, Vector2( 12, 6 ), 27, Vector2( 12, 8 ), 27, Vector2( 12, 9 ), 216, Vector2( 13, 0 ), 54, Vector2( 13, 1 ), 504, Vector2( 13, 2 ), 438, Vector2( 13, 3 ), 438, Vector2( 13, 4 ), 54, Vector2( 13, 5 ), 432, Vector2( 13, 6 ), 54, Vector2( 13, 7 ), 432, Vector2( 13, 8 ), 54, Vector2( 14, 0 ), 219, Vector2( 14, 1 ), 507, Vector2( 14, 2 ), 63, Vector2( 14, 3 ), 216, Vector2( 14, 5 ), 216, Vector2( 14, 9 ), 216, Vector2( 14, 10 ), 255, Vector2( 14, 11 ), 507, Vector2( 15, 1 ), 504, Vector2( 15, 2 ), 447, Vector2( 15, 3 ), 438, Vector2( 15, 4 ), 54, Vector2( 15, 5 ), 432, Vector2( 15, 6 ), 54, Vector2( 15, 7 ), 432, Vector2( 15, 8 ), 54, Vector2( 15, 10 ), 447, Vector2( 15, 11 ), 510 ]
+4/autotile/icon_coordinate = Vector2( 0, 0 )
+4/autotile/tile_size = Vector2( 16, 16 )
+4/autotile/spacing = 0
+4/autotile/occluder_map = [  ]
+4/autotile/navpoly_map = [  ]
+4/autotile/priority_map = [  ]
+4/autotile/z_index_map = [  ]
+4/occluder_offset = Vector2( 0, 0 )
+4/navigation_offset = Vector2( 0, 0 )
+4/shape_offset = Vector2( 0, 0 )
+4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+4/shape_one_way = false
+4/shape_one_way_margin = 0.0
+4/shapes = [  ]
+4/z_index = 0
+5/name = "Dungeon_Tileset.png 5"
+5/texture = ExtResource( 12 )
+5/tex_offset = Vector2( 0, 0 )
+5/modulate = Color( 1, 1, 1, 1 )
+5/region = Rect2( 96, 32, 64, 16 )
+5/tile_mode = 1
+5/autotile/bitmask_mode = 0
+5/autotile/bitmask_flags = [  ]
+5/autotile/icon_coordinate = Vector2( 0, 0 )
+5/autotile/tile_size = Vector2( 16, 16 )
+5/autotile/spacing = 0
+5/autotile/occluder_map = [  ]
+5/autotile/navpoly_map = [  ]
+5/autotile/priority_map = [  ]
+5/autotile/z_index_map = [  ]
+5/occluder_offset = Vector2( 0, 0 )
+5/navigation_offset = Vector2( 0, 0 )
+5/shape_offset = Vector2( 0, 0 )
+5/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+5/shape_one_way = false
+5/shape_one_way_margin = 0.0
+5/shapes = [  ]
+5/z_index = 0
+6/name = "Dungeon_Tileset.png 6"
+6/texture = ExtResource( 12 )
+6/tex_offset = Vector2( 0, 0 )
+6/modulate = Color( 1, 1, 1, 1 )
+6/region = Rect2( 96, 0, 64, 48 )
+6/tile_mode = 1
+6/autotile/bitmask_mode = 2
+6/autotile/bitmask_flags = [ Vector2( 0, 0 ), 432, Vector2( 0, 1 ), 438, Vector2( 0, 2 ), 54, Vector2( 1, 0 ), 504, Vector2( 1, 1 ), 511, Vector2( 1, 2 ), 63, Vector2( 2, 0 ), 504, Vector2( 2, 1 ), 511, Vector2( 2, 2 ), 63, Vector2( 3, 0 ), 216, Vector2( 3, 1 ), 219, Vector2( 3, 2 ), 27 ]
+6/autotile/icon_coordinate = Vector2( 0, 0 )
+6/autotile/tile_size = Vector2( 16, 16 )
+6/autotile/spacing = 0
+6/autotile/occluder_map = [  ]
+6/autotile/navpoly_map = [  ]
+6/autotile/priority_map = [  ]
+6/autotile/z_index_map = [  ]
+6/occluder_offset = Vector2( 0, 0 )
+6/navigation_offset = Vector2( 0, 0 )
+6/shape_offset = Vector2( 0, 0 )
+6/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+6/shape_one_way = false
+6/shape_one_way_margin = 0.0
+6/shapes = [  ]
+6/z_index = 0
+7/name = "0f6a29db-2521-4e60-899f-1795dfa4906e.png 7"
+7/texture = ExtResource( 15 )
+7/tex_offset = Vector2( 0, 0 )
+7/modulate = Color( 1, 1, 1, 1 )
+7/region = Rect2( 112, 176, 16, 16 )
+7/tile_mode = 0
+7/occluder_offset = Vector2( 0, 0 )
+7/navigation_offset = Vector2( 0, 0 )
+7/shape_offset = Vector2( 0, 0 )
+7/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+7/shape_one_way = false
+7/shape_one_way_margin = 0.0
+7/shapes = [  ]
+7/z_index = 0
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://resource/FiraCode-Regular.ttf"
@@ -51,46 +226,96 @@ script = ExtResource( 7 )
 [node name="RemoveObject" type="Node2D" parent="."]
 script = ExtResource( 11 )
 
-[node name="MainGUI" type="MarginContainer" parent="."]
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 780.0
-margin_bottom = 580.0
+[node name="Rooms" type="Node" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 399, 299 )
+current = true
+zoom = Vector2( 0.5, 0.5 )
+smoothing_enabled = true
+smoothing_speed = 10.0
+script = ExtResource( 14 )
+
+[node name="TileMap" type="TileMap" parent="."]
+show_behind_parent = true
+position = Vector2( 1, 0 )
+tile_set = SubResource( 6 )
+cell_size = Vector2( 16, 16 )
+format = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MainGUI" type="MarginContainer" parent="CanvasLayer"]
+margin_right = 800.0
+margin_bottom = 600.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Modeline" type="Label" parent="MainGUI"]
-margin_top = 534.0
-margin_right = 760.0
-margin_bottom = 560.0
+[node name="Modeline" type="Label" parent="CanvasLayer/MainGUI"]
+light_mask = 3
+margin_top = 574.0
+margin_right = 800.0
+margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 8
 custom_fonts/font = SubResource( 2 )
 text = "Modeline"
 script = ExtResource( 9 )
 
-[node name="SideBarBox" type="VBoxContainer" parent="MainGUI"]
-margin_right = 760.0
-margin_bottom = 560.0
+[node name="LoadingScreen" type="TextureRect" parent="CanvasLayer/MainGUI"]
+margin_right = 800.0
+margin_bottom = 600.0
+texture = ExtResource( 18 )
+expand = true
+script = ExtResource( 17 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SideBarBox" type="VBoxContainer" parent="CanvasLayer/MainGUI"]
+margin_right = 800.0
+margin_bottom = 600.0
 rect_min_size = Vector2( 180, 0 )
 script = ExtResource( 8 )
 
-[node name="Turn" type="Label" parent="MainGUI/SideBarBox"]
-margin_left = 676.0
-margin_right = 760.0
-margin_bottom = 278.0
+[node name="Turn" type="Label" parent="CanvasLayer/MainGUI/SideBarBox"]
+margin_left = 716.0
+margin_right = 800.0
+margin_bottom = 510.0
 size_flags_horizontal = 8
 size_flags_vertical = 3
 custom_fonts/font = SubResource( 3 )
 text = "Turn 14"
 
-[node name="Help" type="Label" parent="MainGUI/SideBarBox"]
-margin_left = 712.0
-margin_top = 534.0
-margin_right = 760.0
-margin_bottom = 560.0
+[node name="XP" type="Label" parent="CanvasLayer/MainGUI/SideBarBox"]
+margin_left = 764.0
+margin_top = 514.0
+margin_right = 800.0
+margin_bottom = 540.0
 size_flags_horizontal = 8
-size_flags_vertical = 10
+size_flags_vertical = 8
+custom_fonts/font = SubResource( 4 )
+text = "YOO"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HP_Bar" type="Label" parent="CanvasLayer/MainGUI/SideBarBox"]
+margin_left = 752.0
+margin_top = 544.0
+margin_right = 800.0
+margin_bottom = 570.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
 custom_fonts/font = SubResource( 4 )
 text = "Help"
+
+[node name="Armour_Attack" type="Label" parent="CanvasLayer/MainGUI/SideBarBox"]
+margin_left = 800.0
+margin_top = 574.0
+margin_right = 800.0
+margin_bottom = 600.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+custom_fonts/font = SubResource( 4 )

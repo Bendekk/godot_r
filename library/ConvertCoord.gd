@@ -1,9 +1,9 @@
 extends Node
 
-const START_X: int = 50
-const START_Y: int = 54
-const STEP_X: int = 26
-const STEP_Y: int = 34
+const START_X: int = 8
+const START_Y: int = 8
+const STEP_X: int = 16
+const STEP_Y: int = 16
 
 func vector_to_array(vector_coord: Vector2) -> Array:
 	var x: int = ((vector_coord.x - START_X) / STEP_X) as int
