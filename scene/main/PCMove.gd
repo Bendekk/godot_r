@@ -13,8 +13,9 @@ var _ref_Schedule: Schedule
 var _ref_DungeonBoard: DungeonBoard
 
 var _pc: Sprite
-var _exit: Sprite
+var _exit: Vector2
 var hp_pc
+var key = false
 onready var max_hp = 10
 onready var pc_armour=15
 onready var pc_attack=0
@@ -28,7 +29,11 @@ signal new_dungeon()
 signal game_over()
 signal spawn_potion(x,y)
 signal level_up(m_hp,xp_m,ar,at)
-
+signal drop_chest_item(x,y,i)
+signal item_found(max_hp,pc_armour,pc_attack)
+signal pick_up_key()
+signal loading_screen()
+signal open_exit(x,y)
 
 const PC_ATTACK: String = "PCAttack"
 
@@ -58,8 +63,8 @@ func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 		_pc = new_sprite
 		hp_pc = 10
 		set_process_unhandled_input(true)
-	elif new_sprite.is_in_group(_new_GroupName.EXIT):
-		_exit = new_sprite
+	elif new_sprite.is_in_group(_new_GroupName.CLOSEDEXIT):
+		_exit = new_sprite.position
 
 func _on_Schedule_start_turn(current_sprite: Sprite) -> void:
 	if hp_pc <=0:
@@ -101,6 +106,16 @@ func _try_move(x:int, y:int)-> void:
 		set_process_unhandled_input(false)
 		_ref_Schedule.end_turn()
 #		emit_signal("pc_moved","You hit wall")
+	elif _ref_DungeonBoard.has_sprite(_new_GroupName.CLOSEDEXIT, x, y):
+		if key:
+			_ref_RemoveObject.remove(_new_GroupName.CLOSEDEXIT,x,y)
+			emit_signal("open_exit",x,y)
+			emit_signal("pick_up_key")
+			key=false
+		else:
+			emit_signal("pc_moved",str("You need a key to open a exit"))
+		set_process_unhandled_input(false)
+		_ref_Schedule.end_turn()
 	elif _ref_DungeonBoard.has_sprite(_new_GroupName.DWARF, x, y):
 		var rng = RandomNumberGenerator.new()
 		rng.randomize()
@@ -158,7 +173,7 @@ func _try_move(x:int, y:int)-> void:
 					pc_attack+=1
 					emit_signal("pc_moved",str("Level up +1 Attack Power"))
 				elif i>=0.75 and i<=1:
-					max_hp+=2
+					max_hp+=1
 					pc_armour+=1
 					pc_attack+=1
 					emit_signal("pc_moved",str("Level up +1 to all stats"))
@@ -174,17 +189,48 @@ func _try_move(x:int, y:int)-> void:
 			emit_signal("pc_moved",str("Miss(",r,")"))
 			set_process_unhandled_input(false)
 			_ref_Schedule.end_turn()
+	elif _ref_DungeonBoard.has_sprite(_new_GroupName.CHEST, x, y):
+		_ref_RemoveObject.remove(_new_GroupName.CHEST,x,y)
+		var rng = RandomNumberGenerator.new()
+		rng.randomize()
+		var i = rand_range(0.0, 1.0)
+		emit_signal("drop_chest_item",x,y,i)
+		_ref_Schedule.end_turn()
 	else:
 		_pc.position = _new_ConvertCoord.index_to_vector(x, y)
-		if _pc.position == _exit.position:
+		if _pc.position == _exit:
 			f+=1
+			emit_signal("loading_screen")
 			emit_signal("new_dungeon")
-		if _ref_DungeonBoard.has_sprite(_new_GroupName.POTION,x,y):
+		elif _ref_DungeonBoard.has_sprite(_new_GroupName.POTION,x,y):
 			hp_pc+=2
 			if(hp_pc>max_hp):
 				hp_pc = max_hp
 			emit_signal("hp_change",hp_pc)
 			_ref_RemoveObject.remove(_new_GroupName.POTION,x,y)
+		elif _ref_DungeonBoard.has_sprite(_new_GroupName.WEAPON,x,y):
+			pc_attack+=1
+			emit_signal("pc_moved",str("You found sword +1 Attack Power"))
+			_ref_RemoveObject.remove(_new_GroupName.WEAPON,x,y)
+		elif _ref_DungeonBoard.has_sprite(_new_GroupName.ARMOUR,x,y):
+			pc_armour+=1
+			emit_signal("pc_moved",str("You found armour +1 AC"))
+			_ref_RemoveObject.remove(_new_GroupName.ARMOUR,x,y)
+		elif _ref_DungeonBoard.has_sprite(_new_GroupName.BEER,x,y):
+			max_hp+=2
+			emit_signal("pc_moved",str("You found beer +2HP"))
+			_ref_RemoveObject.remove(_new_GroupName.BEER,x,y)
+		elif _ref_DungeonBoard.has_sprite(_new_GroupName.HIPOTION,x,y):
+			max_hp+=1
+			pc_armour+=1
+			pc_attack+=1
+			emit_signal("pc_moved",str("You found gold potion +1 to all stats"))
+			_ref_RemoveObject.remove(_new_GroupName.HIPOTION,x,y)
+		elif _ref_DungeonBoard.has_sprite(_new_GroupName.KEY,x,y):
+			key = true
+			emit_signal("pick_up_key")
+			_ref_RemoveObject.remove(_new_GroupName.KEY,x,y)
+		emit_signal("item_found",max_hp,pc_armour,pc_attack)
 		set_process_unhandled_input(false)
 		_ref_Schedule.end_turn()
 

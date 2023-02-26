@@ -3,23 +3,35 @@ extends Node2D
 var _new_DungeonSize := preload("res://library/DungeonSize.gd").new() 
 var _new_GroupName := preload("res://library/GroupName.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
-
+var tmp_topl
+var tmp_botr
 var _sprite_dict: Dictionary
 signal sprite_removed(remove_sprite, group_name, x, y)
 func _ready():
-	_init_dict()
+	pass
 
 func is_inside_dungeon(x: int,y:int)->bool:
 	return (x<_new_DungeonSize.MAX_X)  and (y<_new_DungeonSize.MAX_Y)
 
-func _init_dict() -> void:
+func _on_InitWorld_map_created(topl: Vector2,botr: Vector2) ->void:
+	tmp_topl = topl
+	tmp_botr = botr
 	_sprite_dict.clear()
-	var groups = [_new_GroupName.DWARF, _new_GroupName.WALL, _new_GroupName.EXIT, _new_GroupName.POTION, _new_GroupName.SKULL]	
+	var groups = [_new_GroupName.DWARF, _new_GroupName.WALL, _new_GroupName.EXIT, _new_GroupName.POTION, _new_GroupName.SKULL,_new_GroupName.CHEST,_new_GroupName.WEAPON,_new_GroupName.ARMOUR,_new_GroupName.BEER,_new_GroupName.HIPOTION,_new_GroupName.CLOSEDEXIT,_new_GroupName.KEY, _new_GroupName.FLOOR]
 	for g in groups:
 		_sprite_dict[g] = {}
-		for x in range(-200,_new_DungeonSize.MAX_X):
+		for x in range(topl.x,botr.x):
 			_sprite_dict[g][x] = []
-			_sprite_dict[g][x].resize(_new_DungeonSize.MAX_Y)
+			_sprite_dict[g][x].resize(abs(topl.y)+abs(botr.y))
+
+#func _init_dict() -> void:
+#	_sprite_dict.clear()
+##	var groups = [_new_GroupName.DWARF, _new_GroupName.WALL, _new_GroupName.EXIT, _new_GroupName.POTION, _new_GroupName.SKULL,_new_GroupName.CHEST,_new_GroupName.WEAPON,_new_GroupName.ARMOUR,_new_GroupName.BEER,_new_GroupName.HIPOTION,_new_GroupName.CLOSEDEXIT,_new_GroupName.KEY]	
+##	for g in groups:
+##		_sprite_dict[g] = {}
+##		for x in range(-200,_new_DungeonSize.MAX_X):
+##			_sprite_dict[g][x] = []
+##			_sprite_dict[g][x].resize(_new_DungeonSize.MAX_Y)
 
 func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 	var position: Array
@@ -34,6 +46,22 @@ func _on_InitWorld_sprite_created(new_sprite: Sprite) -> void:
 		group_name = _new_GroupName.POTION
 	elif new_sprite.is_in_group(_new_GroupName.SKULL):
 		group_name = _new_GroupName.SKULL
+	elif new_sprite.is_in_group(_new_GroupName.CHEST):
+		group_name = _new_GroupName.CHEST
+	elif new_sprite.is_in_group(_new_GroupName.WEAPON):
+		group_name = _new_GroupName.WEAPON
+	elif new_sprite.is_in_group(_new_GroupName.ARMOUR):
+		group_name = _new_GroupName.ARMOUR
+	elif new_sprite.is_in_group(_new_GroupName.BEER):
+		group_name = _new_GroupName.BEER
+	elif new_sprite.is_in_group(_new_GroupName.HIPOTION):
+		group_name = _new_GroupName.HIPOTION
+	elif new_sprite.is_in_group(_new_GroupName.CLOSEDEXIT):
+		group_name = _new_GroupName.CLOSEDEXIT
+	elif new_sprite.is_in_group(_new_GroupName.KEY):
+		group_name = _new_GroupName.KEY
+	elif new_sprite.is_in_group(_new_GroupName.FLOOR):
+		group_name = _new_GroupName.FLOOR
 	else:
 		return
 	position = _new_ConvertCoord.vector_to_array(new_sprite.position)
@@ -57,14 +85,13 @@ func _on_EnemyAI_enemy_move(_current_sprite : Sprite, x: int, y:int,old_x:int,ol
 	elif _current_sprite.is_in_group(_new_GroupName.SKULL):
 		_sprite_dict[_new_GroupName.SKULL][old_x][old_y] = null
 		_sprite_dict[_new_GroupName.SKULL][x][y] = _current_sprite
+
 func _on_PCMove_new_dungeon():
-	var groups = [_new_GroupName.DWARF, _new_GroupName.WALL, _new_GroupName.EXIT,_new_GroupName.POTION,_new_GroupName.SKULL]
+	var groups = [_new_GroupName.DWARF, _new_GroupName.WALL, _new_GroupName.EXIT,_new_GroupName.POTION,_new_GroupName.SKULL,_new_GroupName.CHEST,_new_GroupName.WEAPON,_new_GroupName.ARMOUR,_new_GroupName.BEER,_new_GroupName.HIPOTION,_new_GroupName.CLOSEDEXIT,_new_GroupName.KEY, _new_GroupName.FLOOR]
 	for g in groups:
-		for x in range(-_new_DungeonSize.MAX_X,_new_DungeonSize.MAX_X):
-			for y in range(-_new_DungeonSize.MAX_Y,_new_DungeonSize.MAX_Y):
+		for x in range(tmp_topl.x,tmp_botr.x):
+			for y in range(tmp_topl.y,tmp_botr.y):
 				var sprite = get_sprite(g,x,y)
 				if sprite != null:
 					emit_signal("sprite_removed", sprite, g, x, y)
 					sprite.queue_free()
-	_init_dict()
-

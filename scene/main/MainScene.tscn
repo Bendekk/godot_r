@@ -1,9 +1,8 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://scene/main/InitWorld.gd" type="Script" id=1]
 [ext_resource path="res://resource/FiraCode-Regular.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://scene/main/PCMove.gd" type="Script" id=3]
-[ext_resource path="res://scene/main/MainScene.gd" type="Script" id=4]
 [ext_resource path="res://scene/main/Schedule.gd" type="Script" id=5]
 [ext_resource path="res://scene/main/EnemyAI.gd" type="Script" id=6]
 [ext_resource path="res://scene/main/DungeonBoard.gd" type="Script" id=7]
@@ -14,54 +13,73 @@
 [ext_resource path="res://resource/Dungeon_Tileset.png" type="Texture" id=12]
 [ext_resource path="res://resource/brickTileset.png" type="Texture" id=13]
 [ext_resource path="res://scene/main/Camera2D.gd" type="Script" id=14]
-[ext_resource path="res://resource/0f6a29db-2521-4e60-899f-1795dfa4906e.png" type="Texture" id=15]
 [ext_resource path="res://scene/main/TextureRect.gd" type="Script" id=17]
 [ext_resource path="res://resource/loading.png" type="Texture" id=18]
 
-[sub_resource type="ConvexPolygonShape2D" id=5]
-points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
+[sub_resource type="GDScript" id=7]
+script/source = "extends Node2D
+
+var __
+func _ready():
+	__ = get_node(\"InitWorld\").connect(\"sprite_created\", get_node(\"PCMove\"),\"_on_InitWorld_sprite_created\")
+	__ = get_node(\"InitWorld\").connect(\"move_pc\", get_node(\"PCMove\"),\"_on_InitWorld_move_pc\")
+	__ = get_node(\"InitWorld\").connect(\"sprite_created\", get_node(\"Schedule\"),\"_on_InitWorld_sprite_created\")
+	__ = get_node(\"InitWorld\").connect(\"sprite_created\", get_node(\"DungeonBoard\"),\"_on_InitWorld_sprite_created\")
+	__ = get_node(\"InitWorld\").connect(\"sprite_created\", get_node(\"EnemyAI\"),\"_on_InitWorld_sprite_created\")
+	__ = get_node(\"InitWorld\").connect(\"sprite_created\", get_node(\"Camera2D\"),\"_on_InitWorld_sprite_created\")
+	__ = get_node(\"InitWorld\").connect(\"map_created\", get_node(\"Camera2D\"),\"_on_InitWorld_map_created\")
+	__ = get_node(\"InitWorld\").connect(\"map_created\", get_node(\"DungeonBoard\"),\"_on_InitWorld_map_created\")
+	__ = get_node(\"InitWorld\").connect(\"loading_screen\", get_node(\"CanvasLayer/MainGUI/LoadingScreen\"),\"_on_InitWorld_loading_screen\")
+	__ = get_node(\"PCMove\").connect(\"loading_screen\", get_node(\"CanvasLayer/MainGUI/LoadingScreen\"),\"_on_InitWorld_loading_screen\")
+	
+	__ = get_node(\"Schedule\").connect(\"start_turn\", get_node(\"EnemyAI\"),\"_on_Schedule_start_turn\")
+	__ = get_node(\"Schedule\").connect(\"start_turn\", get_node(\"PCMove\"),\"_on_Schedule_start_turn\")
+	__ = get_node(\"Schedule\").connect(\"start_turn\", get_node(\"CanvasLayer/MainGUI/SideBarBox\"),\"_on_Schedule_start_turn\")
+	__ = get_node(\"PCMove\").connect(\"hp_change\", get_node(\"CanvasLayer/MainGUI/SideBarBox\"),\"_on_PCMove_hp_change\")
+	__ = get_node(\"PCMove\").connect(\"xp_change\", get_node(\"CanvasLayer/MainGUI/SideBarBox\"),\"_on_PCMove_xp_change\")
+	__ = get_node(\"PCMove\").connect(\"level_up\", get_node(\"CanvasLayer/MainGUI/SideBarBox\"),\"_on_PCMove_level_up\")
+	__ = get_node(\"PCMove\").connect(\"item_found\", get_node(\"CanvasLayer/MainGUI/SideBarBox\"),\"_on_PCMove_item_found\")
+	__ = get_node(\"PCMove\").connect(\"pick_up_key\", get_node(\"CanvasLayer/MainGUI/SideBarBox\"),\"_on_PCMove_pick_up_key\")
+	__ = get_node(\"PCMove\").connect(\"new_dungeon\", get_node(\"InitWorld\"),\"_on_PCMove_new_dungeon\")
+	__ = get_node(\"PCMove\").connect(\"spawn_potion\", get_node(\"InitWorld\"),\"_on_PCMove_spawn_potion\")
+	__ = get_node(\"PCMove\").connect(\"open_exit\", get_node(\"InitWorld\"),\"_on_PCMove_open_exit\")
+	__ = get_node(\"PCMove\").connect(\"drop_chest_item\", get_node(\"InitWorld\"),\"_on_PCMove_drop_chest_item\")
+	__ = get_node(\"PCMove\").connect(\"new_dungeon\", get_node(\"DungeonBoard\"),\"_on_PCMove_new_dungeon\")
+	__ = get_node(\"PCMove\").connect(\"new_dungeon\", get_node(\"Camera2D\"),\"_on_PCMove_new_dungeon\")
+	__ = get_node(\"Schedule\").connect(\"end_turn\", get_node(\"CanvasLayer/MainGUI/Modeline\"),\"_on_Schedule_end_turn\")
+	
+	__ = get_node(\"PCMove\").connect(\"pc_moved\", get_node(\"CanvasLayer/MainGUI/Modeline\"),\"_on_PCMove_pc_moved\")
+	__ = get_node(\"PCMove/PCAttack\").connect(\"pc_attacked\", get_node(\"CanvasLayer/MainGUI/Modeline\"),\"_on_PCAttack_pc_attacked\")
+
+	
+	__ = get_node(\"RemoveObject\").connect(\"sprite_removed\", get_node(\"DungeonBoard\"),\"_on_RemoveObject_sprite_removed\")
+	__ = get_node(\"RemoveObject\").connect(\"sprite_removed\", get_node(\"Schedule\"),\"_on_RemoveObject_sprite_removed\")
+	__ = get_node(\"DungeonBoard\").connect(\"sprite_removed\", get_node(\"Schedule\"),\"_on_RemoveObject_sprite_removed\")
+	
+	__ = get_node(\"EnemyAI\").connect(\"enemy_move\", get_node(\"DungeonBoard\"),\"_on_EnemyAI_enemy_move\")
+	__ = get_node(\"EnemyAI\").connect(\"enemy_attack\", get_node(\"PCMove\"),\"_on_EnemyAI_enemy_attack\")
+	
+	get_node(\"PCMove\")._ref_Schedule = get_node(\"Schedule\")
+	get_node(\"EnemyAI\")._ref_Schedule = get_node(\"Schedule\")
+	get_node(\"EnemyAI\")._ref_DungeonBoard = get_node(\"DungeonBoard\")
+	get_node(\"PCMove\")._ref_DungeonBoard = get_node(\"DungeonBoard\")
+	get_node(\"PCMove/PCAttack\")._ref_Schedule = get_node(\"Schedule\") 
+	get_node(\"PCMove/PCAttack\")._ref_DungeonBoard = get_node(\"DungeonBoard\")
+	get_node(\"PCMove/PCAttack\")._ref_RemoveObject = get_node(\"RemoveObject\")
+	get_node(\"PCMove\")._ref_RemoveObject = get_node(\"RemoveObject\")
+	get_node(\"RemoveObject\")._ref_DungeonBoard = get_node(\"DungeonBoard\")
+	get_node(\"InitWorld\").Map = get_node(\"TileMap\")
+	get_node(\"InitWorld\")._ref_RemoveObject = get_node(\"RemoveObject\")
+	get_node(\"InitWorld\")._ref_DungeonBoard = get_node(\"DungeonBoard\")
+
+"
 
 [sub_resource type="TileSet" id=6]
-0/name = "Dungeon_Tileset.png 0"
-0/texture = ExtResource( 12 )
-0/tex_offset = Vector2( 0, 0 )
-0/modulate = Color( 1, 1, 1, 1 )
-0/region = Rect2( 128, 112, 16, 16 )
-0/tile_mode = 0
-0/occluder_offset = Vector2( 0, 0 )
-0/navigation_offset = Vector2( 0, 0 )
-0/shape_offset = Vector2( 0, 0 )
-0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-0/shape = SubResource( 5 )
-0/shape_one_way = false
-0/shape_one_way_margin = 1.0
-0/shapes = [ {
-"autotile_coord": Vector2( 0, 0 ),
-"one_way": false,
-"one_way_margin": 1.0,
-"shape": SubResource( 5 ),
-"shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
-} ]
-0/z_index = 0
-1/name = "Dungeon_Tileset.png 1"
-1/texture = ExtResource( 12 )
-1/tex_offset = Vector2( 0, 0 )
-1/modulate = Color( 1, 1, 1, 1 )
-1/region = Rect2( 48, 112, 16, 16 )
-1/tile_mode = 0
-1/occluder_offset = Vector2( 0, 0 )
-1/navigation_offset = Vector2( 0, 0 )
-1/shape_offset = Vector2( 0, 0 )
-1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-1/shape_one_way = false
-1/shape_one_way_margin = 0.0
-1/shapes = [  ]
-1/z_index = 0
 2/name = "Dungeon_Tileset.png 2"
 2/texture = ExtResource( 12 )
 2/tex_offset = Vector2( 0, 0 )
 2/modulate = Color( 1, 1, 1, 1 )
-2/region = Rect2( 16, 16, 64, 48 )
+2/region = Rect2( 96, 0, 64, 48 )
 2/tile_mode = 1
 2/autotile/bitmask_mode = 1
 2/autotile/bitmask_flags = [ Vector2( 0, 0 ), 432, Vector2( 0, 1 ), 438, Vector2( 0, 2 ), 54, Vector2( 1, 0 ), 504, Vector2( 1, 1 ), 511, Vector2( 1, 2 ), 63, Vector2( 2, 0 ), 504, Vector2( 2, 1 ), 511, Vector2( 2, 2 ), 63, Vector2( 3, 0 ), 216, Vector2( 3, 1 ), 219, Vector2( 3, 2 ), 27 ]
@@ -103,89 +121,6 @@ points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 3/shape_one_way_margin = 0.0
 3/shapes = [  ]
 3/z_index = 0
-4/name = "0f6a29db-2521-4e60-899f-1795dfa4906e.png 4"
-4/texture = ExtResource( 15 )
-4/tex_offset = Vector2( 0, 0 )
-4/modulate = Color( 1, 1, 1, 1 )
-4/region = Rect2( 0, 0, 256, 192 )
-4/tile_mode = 1
-4/autotile/bitmask_mode = 1
-4/autotile/bitmask_flags = [ Vector2( 0, 2 ), 63, Vector2( 0, 3 ), 504, Vector2( 0, 4 ), 27, Vector2( 0, 5 ), 216, Vector2( 0, 6 ), 27, Vector2( 0, 7 ), 216, Vector2( 0, 8 ), 3, Vector2( 0, 10 ), 27, Vector2( 0, 11 ), 216, Vector2( 1, 2 ), 63, Vector2( 1, 3 ), 504, Vector2( 1, 4 ), 438, Vector2( 1, 5 ), 438, Vector2( 1, 9 ), 432, Vector2( 2, 0 ), 219, Vector2( 2, 1 ), 507, Vector2( 2, 2 ), 27, Vector2( 2, 3 ), 504, Vector2( 2, 5 ), 216, Vector2( 2, 11 ), 216, Vector2( 3, 0 ), 438, Vector2( 3, 1 ), 510, Vector2( 3, 2 ), 54, Vector2( 3, 3 ), 504, Vector2( 3, 4 ), 438, Vector2( 3, 5 ), 438, Vector2( 3, 9 ), 432, Vector2( 4, 0 ), 63, Vector2( 4, 1 ), 504, Vector2( 4, 3 ), 504, Vector2( 4, 8 ), 255, Vector2( 4, 9 ), 219, Vector2( 4, 10 ), 63, Vector2( 5, 0 ), 447, Vector2( 5, 1 ), 510, Vector2( 5, 2 ), 54, Vector2( 5, 3 ), 504, Vector2( 5, 8 ), 63, Vector2( 5, 10 ), 63, Vector2( 6, 0 ), 27, Vector2( 6, 1 ), 504, Vector2( 6, 2 ), 27, Vector2( 6, 3 ), 504, Vector2( 6, 8 ), 219, Vector2( 6, 9 ), 219, Vector2( 6, 10 ), 27, Vector2( 7, 0 ), 438, Vector2( 7, 1 ), 510, Vector2( 7, 3 ), 504, Vector2( 7, 4 ), 54, Vector2( 7, 5 ), 432, Vector2( 7, 6 ), 438, Vector2( 7, 7 ), 438, Vector2( 7, 8 ), 54, Vector2( 7, 10 ), 54, Vector2( 8, 1 ), 504, Vector2( 8, 3 ), 504, Vector2( 8, 4 ), 219, Vector2( 8, 5 ), 219, Vector2( 8, 8 ), 219, Vector2( 8, 9 ), 219, Vector2( 9, 0 ), 438, Vector2( 9, 1 ), 510, Vector2( 9, 3 ), 504, Vector2( 9, 5 ), 432, Vector2( 9, 6 ), 438, Vector2( 9, 7 ), 438, Vector2( 9, 10 ), 54, Vector2( 10, 0 ), 255, Vector2( 10, 1 ), 507, Vector2( 10, 2 ), 255, Vector2( 10, 3 ), 219, Vector2( 10, 4 ), 63, Vector2( 10, 5 ), 216, Vector2( 10, 6 ), 63, Vector2( 10, 8 ), 63, Vector2( 10, 9 ), 216, Vector2( 10, 10 ), 27, Vector2( 11, 0 ), 63, Vector2( 11, 1 ), 504, Vector2( 11, 2 ), 447, Vector2( 11, 3 ), 438, Vector2( 11, 4 ), 63, Vector2( 11, 5 ), 432, Vector2( 11, 6 ), 63, Vector2( 11, 7 ), 432, Vector2( 11, 8 ), 63, Vector2( 12, 0 ), 219, Vector2( 12, 1 ), 507, Vector2( 12, 2 ), 219, Vector2( 12, 3 ), 219, Vector2( 12, 4 ), 27, Vector2( 12, 5 ), 216, Vector2( 12, 6 ), 27, Vector2( 12, 8 ), 27, Vector2( 12, 9 ), 216, Vector2( 13, 0 ), 54, Vector2( 13, 1 ), 504, Vector2( 13, 2 ), 438, Vector2( 13, 3 ), 438, Vector2( 13, 4 ), 54, Vector2( 13, 5 ), 432, Vector2( 13, 6 ), 54, Vector2( 13, 7 ), 432, Vector2( 13, 8 ), 54, Vector2( 14, 0 ), 219, Vector2( 14, 1 ), 507, Vector2( 14, 2 ), 63, Vector2( 14, 3 ), 216, Vector2( 14, 5 ), 216, Vector2( 14, 9 ), 216, Vector2( 14, 10 ), 255, Vector2( 14, 11 ), 507, Vector2( 15, 1 ), 504, Vector2( 15, 2 ), 447, Vector2( 15, 3 ), 438, Vector2( 15, 4 ), 54, Vector2( 15, 5 ), 432, Vector2( 15, 6 ), 54, Vector2( 15, 7 ), 432, Vector2( 15, 8 ), 54, Vector2( 15, 10 ), 447, Vector2( 15, 11 ), 510 ]
-4/autotile/icon_coordinate = Vector2( 0, 0 )
-4/autotile/tile_size = Vector2( 16, 16 )
-4/autotile/spacing = 0
-4/autotile/occluder_map = [  ]
-4/autotile/navpoly_map = [  ]
-4/autotile/priority_map = [  ]
-4/autotile/z_index_map = [  ]
-4/occluder_offset = Vector2( 0, 0 )
-4/navigation_offset = Vector2( 0, 0 )
-4/shape_offset = Vector2( 0, 0 )
-4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-4/shape_one_way = false
-4/shape_one_way_margin = 0.0
-4/shapes = [  ]
-4/z_index = 0
-5/name = "Dungeon_Tileset.png 5"
-5/texture = ExtResource( 12 )
-5/tex_offset = Vector2( 0, 0 )
-5/modulate = Color( 1, 1, 1, 1 )
-5/region = Rect2( 96, 32, 64, 16 )
-5/tile_mode = 1
-5/autotile/bitmask_mode = 0
-5/autotile/bitmask_flags = [  ]
-5/autotile/icon_coordinate = Vector2( 0, 0 )
-5/autotile/tile_size = Vector2( 16, 16 )
-5/autotile/spacing = 0
-5/autotile/occluder_map = [  ]
-5/autotile/navpoly_map = [  ]
-5/autotile/priority_map = [  ]
-5/autotile/z_index_map = [  ]
-5/occluder_offset = Vector2( 0, 0 )
-5/navigation_offset = Vector2( 0, 0 )
-5/shape_offset = Vector2( 0, 0 )
-5/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-5/shape_one_way = false
-5/shape_one_way_margin = 0.0
-5/shapes = [  ]
-5/z_index = 0
-6/name = "Dungeon_Tileset.png 6"
-6/texture = ExtResource( 12 )
-6/tex_offset = Vector2( 0, 0 )
-6/modulate = Color( 1, 1, 1, 1 )
-6/region = Rect2( 96, 0, 64, 48 )
-6/tile_mode = 1
-6/autotile/bitmask_mode = 2
-6/autotile/bitmask_flags = [ Vector2( 0, 0 ), 432, Vector2( 0, 1 ), 438, Vector2( 0, 2 ), 54, Vector2( 1, 0 ), 504, Vector2( 1, 1 ), 511, Vector2( 1, 2 ), 63, Vector2( 2, 0 ), 504, Vector2( 2, 1 ), 511, Vector2( 2, 2 ), 63, Vector2( 3, 0 ), 216, Vector2( 3, 1 ), 219, Vector2( 3, 2 ), 27 ]
-6/autotile/icon_coordinate = Vector2( 0, 0 )
-6/autotile/tile_size = Vector2( 16, 16 )
-6/autotile/spacing = 0
-6/autotile/occluder_map = [  ]
-6/autotile/navpoly_map = [  ]
-6/autotile/priority_map = [  ]
-6/autotile/z_index_map = [  ]
-6/occluder_offset = Vector2( 0, 0 )
-6/navigation_offset = Vector2( 0, 0 )
-6/shape_offset = Vector2( 0, 0 )
-6/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-6/shape_one_way = false
-6/shape_one_way_margin = 0.0
-6/shapes = [  ]
-6/z_index = 0
-7/name = "0f6a29db-2521-4e60-899f-1795dfa4906e.png 7"
-7/texture = ExtResource( 15 )
-7/tex_offset = Vector2( 0, 0 )
-7/modulate = Color( 1, 1, 1, 1 )
-7/region = Rect2( 112, 176, 16, 16 )
-7/tile_mode = 0
-7/occluder_offset = Vector2( 0, 0 )
-7/navigation_offset = Vector2( 0, 0 )
-7/shape_offset = Vector2( 0, 0 )
-7/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-7/shape_one_way = false
-7/shape_one_way_margin = 0.0
-7/shapes = [  ]
-7/z_index = 0
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://resource/FiraCode-Regular.ttf"
@@ -203,7 +138,7 @@ size = 20
 font_data = ExtResource( 2 )
 
 [node name="MainScene" type="Node2D"]
-script = ExtResource( 4 )
+script = SubResource( 7 )
 
 [node name="InitWorld" type="Node2D" parent="."]
 script = ExtResource( 1 )
@@ -282,7 +217,7 @@ script = ExtResource( 8 )
 [node name="Turn" type="Label" parent="CanvasLayer/MainGUI/SideBarBox"]
 margin_left = 716.0
 margin_right = 800.0
-margin_bottom = 510.0
+margin_bottom = 480.0
 size_flags_horizontal = 8
 size_flags_vertical = 3
 custom_fonts/font = SubResource( 3 )
@@ -290,9 +225,9 @@ text = "Turn 14"
 
 [node name="XP" type="Label" parent="CanvasLayer/MainGUI/SideBarBox"]
 margin_left = 764.0
-margin_top = 514.0
+margin_top = 484.0
 margin_right = 800.0
-margin_bottom = 540.0
+margin_bottom = 510.0
 size_flags_horizontal = 8
 size_flags_vertical = 8
 custom_fonts/font = SubResource( 4 )
@@ -303,15 +238,24 @@ __meta__ = {
 
 [node name="HP_Bar" type="Label" parent="CanvasLayer/MainGUI/SideBarBox"]
 margin_left = 752.0
-margin_top = 544.0
+margin_top = 514.0
 margin_right = 800.0
-margin_bottom = 570.0
+margin_bottom = 540.0
 size_flags_horizontal = 8
 size_flags_vertical = 8
 custom_fonts/font = SubResource( 4 )
 text = "Help"
 
 [node name="Armour_Attack" type="Label" parent="CanvasLayer/MainGUI/SideBarBox"]
+margin_left = 800.0
+margin_top = 544.0
+margin_right = 800.0
+margin_bottom = 570.0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+custom_fonts/font = SubResource( 4 )
+
+[node name="Key" type="Label" parent="CanvasLayer/MainGUI/SideBarBox"]
 margin_left = 800.0
 margin_top = 574.0
 margin_right = 800.0

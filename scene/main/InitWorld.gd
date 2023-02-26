@@ -10,6 +10,13 @@ const ArrowRight := preload("res://sprite/ArrowRight.tscn")
 const RemoveObject := preload("res://scene/main/RemoveObject.gd")
 const Skull := preload("res://sprite/Skull.tscn")
 const Exit := preload("res://sprite/Exit.tscn")
+const Chest := preload("res://sprite/Chest.tscn")
+const WEAPON := preload("res://sprite/Weapon.tscn")
+const ARMOUR := preload("res://sprite/Armour.tscn")
+const BEER := preload("res://sprite/Beer.tscn")
+const HIPOTION := preload("res://sprite/GoldPotion.tscn")
+const ClosedExit := preload("res://sprite/ClosedExit.tscn")
+const Key := preload("res://sprite/Key.tscn")
 var Room = preload("res://Room.tscn")
 var _new_GroupName := preload("res://library/GroupName.gd").new()
 var _new_ConvertCoord := preload("res://library/ConvertCoord.gd").new()
@@ -28,6 +35,8 @@ var start_room = null
 var end_room = null
 var room_nr
 var good_room
+var tmp_top
+var tmp_bot
 var f = 0
 func _ready():
 	randomize()
@@ -60,6 +69,8 @@ func init_all():
 		_init_dwarf()
 		_init_exit()
 		_init_skull()
+		_init_chest()
+		_init_key()
 		emit_signal("loading_screen")
 		set_process_unhandled_input(false)
 		
@@ -102,12 +113,41 @@ func _init_pc() -> void:
 
 func _init_exit() -> void:
 	var ul = (end_room.position / _new_DungeonSize.title_size).floor()
-	_create_sprite(Exit,_new_GroupName.EXIT,ul.x,ul.y)
-#
-func _init_floor() -> void:
-	for i in range(_new_DungeonSize.MAX_X):
-		for j in range (_new_DungeonSize.MAX_Y):
-			_create_sprite(Floor,_new_GroupName.FLOOR,i,j)
+	_create_sprite(ClosedExit,_new_GroupName.CLOSEDEXIT,ul.x,ul.y)
+
+#func _init_floor() -> void:
+#	for i in range(_new_DungeonSize.MAX_X):
+#		for j in range (_new_DungeonSize.MAX_Y):
+#			_create_sprite(Floor,_new_GroupName.FLOOR,i,j)
+
+func _init_chest() -> void:
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	for i in range(f+1):
+		good_room = 0
+		room_nr = floor(rng.randf_range(0,get_node("../Rooms").get_child_count()))
+		for room in get_node("../Rooms").get_children():
+			if(good_room == room_nr):
+				var ul = (room.position / _new_DungeonSize.title_size).floor()
+				var s = (room.size /_new_DungeonSize.title_size ).floor()
+				s.x = rng.randf_range(-s.x/2,s.x/2)
+				s.y = rng.randf_range(-s.y/2,s.y/2)
+				_create_sprite(Chest, _new_GroupName.CHEST,ul.x+s.x,ul.y+s.y)
+			good_room+=1
+
+func _init_key() -> void:
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	good_room = 0
+	room_nr = floor(rng.randf_range(0,get_node("../Rooms").get_child_count()))
+	for room in get_node("../Rooms").get_children():
+			if(good_room == room_nr):
+				var ul = (room.position / _new_DungeonSize.title_size).floor()
+				var s = (room.size /_new_DungeonSize.title_size ).floor()
+				s.x = rng.randf_range(-s.x/2,s.x/2)
+				s.y = rng.randf_range(-s.y/2,s.y/2)
+				_create_sprite(Key, _new_GroupName.KEY,ul.x+s.x,ul.y+s.y)
+			good_room+=1
 #
 #func _init_wall() -> void:
 #	_create_sprite(Wall,_new_GroupName.WALL,5,5)
@@ -125,9 +165,9 @@ func _create_sprite(mysprite: PackedScene, group: String, x: int, y: int, x_offs
 	new_sprite.add_to_group(group)
 	add_child(new_sprite)
 	emit_signal("sprite_created", new_sprite)
+
 func make_rooms():
 	for i in range(_new_DungeonSize.num_room+f):
-		print(i)
 		var pos = Vector2(0,0)
 		var r = Room.instance()
 		var w = (_new_DungeonSize.min_size + randi() % (_new_DungeonSize.max_size - _new_DungeonSize.min_size))
@@ -138,14 +178,12 @@ func make_rooms():
 	var room_positions= []
 	var guar_rooms = 0
 	for room in get_node("../Rooms").get_children():
-		if guar_rooms<5+f:
-			print(room_positions)
+		if guar_rooms<7+f:
 			room.mode = RigidBody2D.MODE_STATIC
 			room_positions.append(Vector3(room.position.x,room.position.y,0))
 		elif randf() < _new_DungeonSize.cull:
 			room.queue_free()
 		else:
-			print(room_positions)
 			room.mode = RigidBody2D.MODE_STATIC
 			room_positions.append(Vector3(room.position.x,room.position.y,0))
 		guar_rooms+=1
@@ -199,11 +237,13 @@ func make_map():
 		full = full.merge(r)
 	var topl = Map.world_to_map(full.position)
 	var bottomr = Map.world_to_map(full.end)
+	tmp_top = topl
+	tmp_bot = bottomr
 	emit_signal("map_created", topl,bottomr)
 	for x in range(topl.x, bottomr.x):
 		for y in range(topl.y,bottomr.y):
 			_create_sprite(Wall,_new_GroupName.WALL,x,y)
-			Map.set_cell(x,y,7)
+			Map.set_cell(x,y,2)
 	
 	var corridors = []
 	for room in get_node("../Rooms").get_children():
@@ -241,15 +281,19 @@ func carve_path(p1,p2):
 		Map.set_cell(x, x_y.y + y_diff,3)
 		_ref_RemoveObject.remove(_new_GroupName.WALL,x,x_y.y)
 		_ref_RemoveObject.remove(_new_GroupName.WALL,x,x_y.y + y_diff)
-		_create_sprite(Floor,_new_GroupName.FLOOR,x,x_y.y)
-		_create_sprite(Floor,_new_GroupName.FLOOR,x,x_y.y + y_diff)
+		if !_ref_DungeonBoard.has_sprite(_new_GroupName.FLOOR,x,x_y.y):
+			_create_sprite(Floor,_new_GroupName.FLOOR,x,x_y.y)
+		if !_ref_DungeonBoard.has_sprite(_new_GroupName.FLOOR,x,x_y.y + y_diff):
+			_create_sprite(Floor,_new_GroupName.FLOOR,x,x_y.y + y_diff)
 	for y in range(p1.y, p2.y, y_diff):
 		Map.set_cell(y_x.x ,y ,3)
 		Map.set_cell(y_x.x + x_diff ,y ,3)
 		_ref_RemoveObject.remove(_new_GroupName.WALL,y_x.x ,y)
 		_ref_RemoveObject.remove(_new_GroupName.WALL,y_x.x + x_diff ,y)
-		_create_sprite(Floor,_new_GroupName.FLOOR,y_x.x ,y)
-		_create_sprite(Floor,_new_GroupName.FLOOR,y_x.x + x_diff ,y)
+		if !_ref_DungeonBoard.has_sprite(_new_GroupName.FLOOR,y_x.x ,y):
+			_create_sprite(Floor,_new_GroupName.FLOOR,y_x.x ,y)
+		if !_ref_DungeonBoard.has_sprite(_new_GroupName.FLOOR,y_x.x + x_diff ,y):
+			_create_sprite(Floor,_new_GroupName.FLOOR,y_x.x + x_diff ,y)
 
 func find_start_room():
 	var min_x = INF
@@ -267,7 +311,6 @@ func find_end_room():
 
 func _on_PCMove_new_dungeon():
 	f+=1
-	emit_signal("loading_screen")
 	Map.clear()
 	for room in get_node("../Rooms").get_children():
 		room.queue_free()
@@ -278,3 +321,15 @@ func _on_PCMove_new_dungeon():
 func _on_PCMove_spawn_potion(x,y):
 	_create_sprite(Potion,_new_GroupName.POTION,x,y)
    
+func _on_PCMove_drop_chest_item(x,y,i):
+	if i<0.25:
+		_create_sprite(WEAPON,_new_GroupName.WEAPON,x,y)
+	elif i>=0.25 and i<0.5:
+		_create_sprite(ARMOUR,_new_GroupName.ARMOUR,x,y)
+	elif i>=0.5 and i<0.75:
+		_create_sprite(BEER,_new_GroupName.BEER,x,y)
+	elif i>=0.75 and i<=1:
+		_create_sprite(HIPOTION,_new_GroupName.HIPOTION,x,y)
+
+func _on_PCMove_open_exit(x,y):
+	_create_sprite(Exit,_new_GroupName.EXIT,x,y)

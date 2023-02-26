@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/16x16 dungeon ii wall reconfig v04 spritesheet.png-25b0a4e7b8cea0a9d811b33ab45449ba.stex"
+path="res://.import/play.png-5c90e88e8136487a183a099d67a7de24.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://resource/16x16 dungeon ii wall reconfig v04 spritesheet.png"
-dest_files=[ "res://.import/16x16 dungeon ii wall reconfig v04 spritesheet.png-25b0a4e7b8cea0a9d811b33ab45449ba.stex" ]
+source_file="res://addons/gut/gui/play.png"
+dest_files=[ "res://.import/play.png-5c90e88e8136487a183a099d67a7de24.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
